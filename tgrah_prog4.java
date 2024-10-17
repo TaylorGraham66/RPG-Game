@@ -28,23 +28,23 @@ public class tgrah_prog4 {
 				break;
 			}
 
-			System.out.printf("Choose your Action! \n1. Basic Attack (Input 'Basic') \n2. Fireball (Input 'Fireball') \n3. Heal (Input 'Heal') \n4. Empower (Input 'Empower') \n5. Flee (Input 'Flee')\n");	
+			System.out.printf("Choose your Action! \n1. Basic Attack\n2. Fireball\n3. Heal\n4. Empower\n5. Flee\n");	
 			
 			String choice = inpt.nextLine();
 			
-			if(choice.toLowerCase().equals("basic")) {
+			if(choice.toLowerCase().equals("basic") || choice.equals("1") || choice.toLowerCase().equals("basic attack")) {
 				playerBasic();
 				gobAttack();
-			}else if(choice.toLowerCase().equals("fireball")) {
+			}else if(choice.toLowerCase().equals("fireball") || choice.equals("2")) {
 				playerFire();
 				gobAttack();
-			}else if(choice.toLowerCase().equals("heal")) {
+			}else if(choice.toLowerCase().equals("heal") || choice.equals("3")) {
 				playerHeal();
 				gobAttack();
-			}else if(choice.toLowerCase().equals("empower")) {
+			}else if(choice.toLowerCase().equals("empower") || choice.equals("4")) {
 				empower();
 				gobAttack();
-			}else if(choice.toLowerCase().equals("flee")) {
+			}else if(choice.toLowerCase().equals("flee") || choice.equals("5")) {
 				flee();
 			}else {
 				System.out.println("Action not recognized");
@@ -89,7 +89,7 @@ public class tgrah_prog4 {
 			if(miss < 9) {
 			chance.dmg = rand.nextInt(chance.playerLowBasic, chance.playerHighBasic + 1);
 			chance.gobHP -= chance.dmg;
-			System.out.printf("Your attacked landed! It did %d damage!\n", chance.dmg);
+			System.out.printf("Your basic attack landed! It did %d damage!\n", chance.dmg);
 			}else {
 				System.out.println("You're basic attack missed!");
 				chance.dmg = 0;
@@ -102,7 +102,7 @@ public class tgrah_prog4 {
 			if(chance.playerMP >= 6) {
 				chance.dmg = rand.nextInt(chance.playerLowFire, chance.playerHighFire + 1);
 				chance.gobHP -= chance.dmg;
-				System.out.printf("Your attacked landed! It did %d damage! It used 6 MP\n", chance.dmg);
+				System.out.printf("Your fireball landed! It did %d damage! It used 6 MP\n", chance.dmg);
 				chance.playerMP -= 6;
 			}else {
 				System.out.println("You don't have enough MP! Failed to cast!");
@@ -165,16 +165,22 @@ public class tgrah_prog4 {
 			
 			if(chance.gobHP > 0) {
 				for(int i = 1; i < 3; i++) {
+					int miss = rand.nextInt(1,11);
+					if(miss <= 6) {
 					int gobDMG = rand.nextInt(3,8);
 					chance.playerHP -= gobDMG;
 					System.out.printf("The goblin attacked! it did %d damage!\n", gobDMG);
+				}else {
+					System.out.println("The goblin missed!");
+				}
 				}
 			}else {
 				System.out.printf("");
+			}
 			}
 		}
 	
 	
 	
 	
-}
+
