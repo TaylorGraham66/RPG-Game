@@ -255,6 +255,9 @@ public class tgrah_prog4 {
 					}else if(decision.toLowerCase().equals("health")) {
 						chance.health++;
 						System.out.println("[*]You have increased your health!");
+					}else {
+						System.out.println("[*]Input not recognized, please type 'Strength', 'Magic', or 'Health'.");
+						skillUpgrade();
 					}
 
 					skillInpt.close();
