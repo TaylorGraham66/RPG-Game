@@ -9,7 +9,10 @@ public class tgrah_prog4 {
 	
 		System.out.println("While wondering through the woods, you encountered a wild goblin! It's dual wielding knives and looks hungry... Fight or Die!");
 		
-		
+		Boolean killGob = false;
+
+
+
 		Scanner inpt = new Scanner(System.in);
 			
 		// Main do While loop
@@ -19,12 +22,18 @@ public class tgrah_prog4 {
 			System.out.printf("\nGoblin HP: %d/80\n", chance.gobHP);
 			
 			if(chance.playerHP <= 0) {
-				System.out.println("You have died! Game Over!");
+				System.out.println("[*]You have died! Game Over!");
 				chance.quit = true;
 				break;
 			}else if(chance.gobHP <= 0) {
-				System.out.println("You have killed the goblin! You won!");
+				System.out.println("[*]You have killed the goblin and gained 10xp!");
 				chance.quit = true;
+				killGob = true;
+				chance.xp += 10;
+				levelUp();
+				skillUpgrade();
+				break;
+			}else if(chance.flee) {
 				break;
 			}
 
@@ -53,7 +62,20 @@ public class tgrah_prog4 {
 			
 			
 		}while(!chance.quit);
-	
+
+		
+		//After Battle
+
+		if(killGob) {
+
+			System.out.println("[*]After defeating the Goblin you decide to go back to your village");
+
+
+
+		}else if(chance.flee) {
+			System.out.println("[*]The goblin was too strong... you need to train harder");
+		}
+
 		inpt.close();
 	}
 	
@@ -77,8 +99,21 @@ public class tgrah_prog4 {
 			public static int dmg = 0;
 			public static int heal = 0;
 			
-			//Sentinel Value
+			//Sentinel Value / Booleans
 			public static boolean quit = false;
+			public static boolean flee = false;
+			public static boolean levelUp = false;
+
+			//Experience Variables
+			public static int xp = 0;
+			public static int expToLevel = 10;
+			public static int level = 1;
+
+			//Character Values
+			public static int strength = 0;
+			public static int magic = 0;
+			public static int health = 0;
+			public static int skillPoint = 0;
 		}
 	
 		public static void playerBasic() {
@@ -88,6 +123,7 @@ public class tgrah_prog4 {
 		
 			if(miss < 9) {
 			chance.dmg = rand.nextInt(chance.playerLowBasic, chance.playerHighBasic + 1);
+			chance.dmg += chance.strength * 10;
 			chance.gobHP -= chance.dmg;
 			System.out.printf("Your basic attack landed! It did %d damage!\n", chance.dmg);
 			}else {
@@ -101,6 +137,7 @@ public class tgrah_prog4 {
 
 			if(chance.playerMP >= 6) {
 				chance.dmg = rand.nextInt(chance.playerLowFire, chance.playerHighFire + 1);
+				chance.dmg += chance.magic * 10;
 				chance.gobHP -= chance.dmg;
 				System.out.printf("Your fireball landed! It did %d damage! It used 6 MP\n", chance.dmg);
 				chance.playerMP -= 6;
@@ -117,6 +154,7 @@ public class tgrah_prog4 {
 				if(chance.playerMP >= 8) {
 					chance.heal = rand.nextInt(chance.playerLowHeal, chance.playerHighHeal + 1);
 					if((chance.playerHP + chance.heal) <= 100) {
+						chance.heal += chance.health * 10;
 						chance.playerHP += chance.heal;
 						System.out.printf("You healed %d HP! It used 8 MP\n", chance.heal);
 						chance.playerMP -= 8;
@@ -154,6 +192,7 @@ public class tgrah_prog4 {
 			if(fleeChance < 4) {
 				System.out.println("You have escaped");
 				chance.quit = true;
+				chance.flee = true;
 			}else {
 				System.out.println("The goblin stabbed you in the back while you were trying to run away! You died!");
 				chance.quit = true;
@@ -178,7 +217,54 @@ public class tgrah_prog4 {
 				System.out.printf("");
 			}
 			}
+
+			public static void levelUp() {
+
+				if(chance.xp >= chance.expToLevel) {
+					chance.level++;
+					chance.expToLevel *= 2;
+					chance.playerLowBasic += 4;
+					chance.playerHighBasic += 6;
+					chance.playerLowFire += 4;
+					chance.playerHighFire += 6;
+					chance.playerLowHeal += 4;
+					chance.playerHighHeal += 6;
+					chance.playerHP += 50;
+					chance.playerMP += 25;
+					chance.skillPoint++;
+					System.out.println("[*]You have leveled up! You feel the power surging through you!");
+				}
+
+			}
+
+			public static void skillUpgrade() {
+
+				if(chance.skillPoint > 0) {
+					
+					System.out.println("[*]You have a skill point. Decide if you want to upgrade your Strength, Magic, or Health.");
+
+					Scanner skillInpt = new Scanner(System.in);
+					String decision = skillInpt.nextLine();
+
+					if(decision.toLowerCase().equals("strength")) {
+						chance.strength++;
+						System.out.println("[*]You have increased your strength!");
+					}else if(decision.toLowerCase().equals("magic")) {
+						chance.magic++;
+						System.out.println("[*]You have increased your magic power!");
+					}else if(decision.toLowerCase().equals("health")) {
+						chance.health++;
+						System.out.println("[*]You have increased your health!");
+					}
+
+					skillInpt.close();
+				}
+
+			}
+
 		}
+
+		
 	
 	
 	
